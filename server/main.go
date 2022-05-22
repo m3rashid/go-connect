@@ -1,16 +1,22 @@
 package main
 
 import (
+	"context"
+	"log"
+	"time"
+
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"log"
 )
+
+const mongodbUri = "mongodb://localhost:27017/jmi-connect"
 
 func main() {
 	app := fiber.New()
 
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017/jmi-connect")
+	clientOptions := options.Client().ApplyURI(mongodbUri)
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		log.Fatal(err)
