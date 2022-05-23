@@ -10,8 +10,15 @@ import {
 
 import UserTitle from "../atoms/userTitle";
 import { useDispatch } from "react-redux";
+import { IAvatar } from "../../interfaces/avatar";
 
-const Card = ({ post, loggedUser, reload }) => {
+interface ICard {
+  post: any;
+  loggedUser: any;
+  reload: () => void;
+}
+
+const Card: React.FC<ICard> = ({ post, loggedUser, reload }) => {
   const user = {
     userName: post.userName,
     userId: post.userID,
@@ -23,7 +30,7 @@ const Card = ({ post, loggedUser, reload }) => {
     gender: post.gender,
   };
 
-  const avatar = {
+  const avatar: IAvatar = {
     avatarID: post.avatarID,
     sex: post.sex,
     faceColor: post.faceColor,
@@ -84,10 +91,10 @@ const Card = ({ post, loggedUser, reload }) => {
 
   const handleLike = () => {
     if (isLiked) {
-      dispatch(removeLike(loggedUser.userID, post.postID));
+      dispatch(removeLike(loggedUser.userID, post.postID) as any);
       setLikes(Likes - 1);
     } else {
-      dispatch(addLike(loggedUser.userID, post.postID));
+      dispatch(addLike(loggedUser.userID, post.postID) as any);
       setLikes(Likes + 1);
     }
 
@@ -95,8 +102,8 @@ const Card = ({ post, loggedUser, reload }) => {
   };
   const handleBookmark = () => {
     Bookmarked
-      ? dispatch(removeBookmark(loggedUser.userID, post.postID))
-      : dispatch(addBookmark(loggedUser.userID, post.postID));
+      ? dispatch(removeBookmark(loggedUser.userID, post.postID) as any)
+      : dispatch(addBookmark(loggedUser.userID, post.postID) as any);
     setBookmarked(!Bookmarked);
     reload && reload();
   };
@@ -171,7 +178,6 @@ const Card = ({ post, loggedUser, reload }) => {
                   ? "text-blue-500"
                   : "text-gray-700 dark:text-gray-300"
               }
-              size="xl"
             >
               <FaBookmark size={22} />
             </span>

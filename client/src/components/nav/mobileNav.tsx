@@ -8,7 +8,12 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const ListItem = ({ link, Icon }) => {
+interface IListItem {
+  link: string;
+  Icon: typeof FaHome;
+}
+
+const ListItem: React.FC<IListItem> = ({ link, Icon }) => {
   return (
     <Link to={link}>
       <div className="rounded-md px-4 py-3 my-1 hover:bg-gray-200 dark:hover:bg-gray-700">
@@ -19,7 +24,7 @@ const ListItem = ({ link, Icon }) => {
 };
 
 const MobileNav = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state: any) => state.auth.user);
 
   return (
     <>

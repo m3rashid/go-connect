@@ -8,8 +8,15 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Avatar, { genConfig } from "react-nice-avatar";
+import { IAvatar } from "../../interfaces/avatar";
 
-const ListItem = ({ link, label, Icon }) => {
+interface IListItem {
+  link: string;
+  Icon: typeof FaHome;
+  label: string;
+}
+
+const ListItem: React.FC<IListItem> = ({ link, label, Icon }) => {
   return (
     <Link to={link}>
       <div className="flex flex-row items-center px-2 py-2 mb-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 w-full">
@@ -21,8 +28,8 @@ const ListItem = ({ link, label, Icon }) => {
 };
 
 const Nav = () => {
-  const auth = useSelector((state) => state.auth);
-  const avatarSettings = genConfig(auth.avatar);
+  const auth = useSelector((state: any) => state.auth);
+  const avatarSettings = genConfig(auth.avatar as IAvatar);
   const user = auth.user;
 
   return (

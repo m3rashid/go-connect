@@ -1,3 +1,5 @@
+import { AxiosRequestHeaders } from "axios";
+
 export const CREATE_TOPIC_SUCCESS = "CREATE_TOPIC_SUCCESS";
 export const CREATE_TOPIC_FAIL = "CREATE_TOPIC_FAIL";
 
@@ -46,7 +48,7 @@ export const UPDATE_PROFILE = "UPDATE_PROFILE";
 export const ADD_LIKE = "ADD_LIKE";
 export const REMOVE_LIKE = "REMOVE_LIKE";
 
-export const configContentType = {
+export const configContentType: { headers: AxiosRequestHeaders } = {
   headers: { "Content-type": "application/json" },
 };
 

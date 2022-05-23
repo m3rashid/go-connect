@@ -5,7 +5,19 @@ import { ImCross } from "react-icons/im";
 import Button from "../atoms/Button";
 import Input from "../atoms/input";
 
-const Dialog = ({ isDeleteDialog, title, content, onConfirm }) => {
+interface IDialog {
+  isDeleteDialog?: boolean;
+  title: string | React.ReactNode;
+  content: any;
+  onConfirm: (topicName?: string) => void;
+}
+
+const Dialog: React.FC<IDialog> = ({
+  isDeleteDialog,
+  title,
+  content,
+  onConfirm,
+}) => {
   const [showModal, setShowModal] = React.useState(false);
   const [topicName, setTopicName] = React.useState("");
   React.useEffect(() => {
@@ -34,7 +46,7 @@ const Dialog = ({ isDeleteDialog, title, content, onConfirm }) => {
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white dark:bg-gray-700 shadow-xl shadow-black/40 outline-none focus:outline-none">
+              <div className="border-0 rounded-lg relative flex flex-col w-full bg-white dark:bg-gray-700 shadow-xl shadow-black/40 outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between border-b border-solid border-slate-200 rounded-t">
                   <h3 className="text-3xl font-semibold p-4 ">{title}</h3>
@@ -59,7 +71,6 @@ const Dialog = ({ isDeleteDialog, title, content, onConfirm }) => {
                     <Input
                       className={"w-96 p-2 mx-4"}
                       name="topicName"
-                      id="topicName"
                       type="text"
                       Icon={FaHashtag}
                       placeholder="Enter new topic name"

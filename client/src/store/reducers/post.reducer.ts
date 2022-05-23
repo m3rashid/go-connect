@@ -8,7 +8,15 @@ import {
   REMOVE_LIKE,
 } from "../constants";
 
-const initialState = {
+interface IPostState {
+  posts: any;
+  post: any;
+  bookmarks: any;
+  bookmarksLoading: boolean;
+  postsLoading: boolean;
+}
+
+const initialState: IPostState = {
   posts: {},
   post: {},
   bookmarks: {},
@@ -16,7 +24,7 @@ const initialState = {
   postsLoading: false,
 };
 
-const postReducer = (state = initialState, action) => {
+const postReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case POSTS_LOADED:
       return {
@@ -42,15 +50,15 @@ const postReducer = (state = initialState, action) => {
       return { ...state, postsLoading: true };
 
     case ADD_LIKE:
-      const allPosts = Object.values(state.posts).map((post) =>
-          post.postID === action.payload.postID
-              ? { ...post, isLiked: true, likes: post.likes + 1 }
-              : post
+      const allPosts = Object.values(state.posts).map((post: any) =>
+        post.postID === action.payload.postID
+          ? { ...post, isLiked: true, likes: post.likes + 1 }
+          : post
       );
       return { ...state, allPosts };
 
     case REMOVE_LIKE:
-      const posts = Object.values(state.posts).map((post) =>
+      const posts = Object.values(state.posts).map((post: any) =>
         post.postID === action.payload.postID
           ? { ...post, isLiked: false, likes: post.likes - 1 }
           : post

@@ -13,7 +13,7 @@ import {
 const useSignup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const theme = useSelector((state) => state.ui.theme);
+  const theme = useSelector((state: any) => state.ui.theme);
   const initialState = {
     firstName: "",
     lastName: "",
@@ -25,7 +25,7 @@ const useSignup = () => {
   };
   const [credentials, setCredentials] = React.useState(initialState);
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setCredentials((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -42,7 +42,7 @@ const useSignup = () => {
     ],
   };
 
-  const changeGender = (label, container) => {
+  const changeGender = (label: any, container: any) => {
     setCredentials((prev) => ({
       ...prev,
       [container.name]: label.value,

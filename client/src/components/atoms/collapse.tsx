@@ -1,7 +1,12 @@
 import React from "react";
 import { MdArrowBackIosNew } from "react-icons/md";
 
-const Collapse = ({ title, children }) => {
+interface ICollapse {
+  title: string;
+  children: React.ReactNode;
+}
+
+const Collapse: React.FC<ICollapse> = ({ title, children }) => {
   const [open, setopen] = React.useState(false);
 
   return (

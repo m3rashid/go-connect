@@ -4,7 +4,7 @@ import Avatar from "react-nice-avatar";
 import { Link } from "react-router-dom";
 import Loader from "../loader";
 
-const getToxicityColorCode = (toxicity) => {
+const getToxicityColorCode = (toxicity: number) => {
   if (!toxicity) {
     return;
   } else if (toxicity < 0.1) {
@@ -20,7 +20,19 @@ const getToxicityColorCode = (toxicity) => {
   }
 };
 
-const UserTitle = ({ post, user, avatar, classification }) => {
+interface IUserTitle {
+  post?: any;
+  user: any;
+  avatar: any;
+  classification?: any;
+}
+
+const UserTitle: React.FC<IUserTitle> = ({
+  post,
+  user,
+  avatar,
+  classification,
+}) => {
   const [cOpen, setCOpen] = React.useState(false);
 
   if (!user || !avatar) {
@@ -58,15 +70,17 @@ const UserTitle = ({ post, user, avatar, classification }) => {
             >
               <table>
                 <tbody>
-                  {Object.entries(classification).map(([key, value]) => (
-                    <tr key={key}>
-                      <td className="pr-6">
-                        {key.charAt(0).toUpperCase() +
-                          key.slice(1).split("_").join(" ")}
-                      </td>
-                      <td>{parseFloat(value).toFixed(2)}</td>
-                    </tr>
-                  ))}
+                  {Object.entries(classification).map(
+                    ([key, value]: [key: string, value: any]) => (
+                      <tr key={key}>
+                        <td className="pr-6">
+                          {key.charAt(0).toUpperCase() +
+                            key.slice(1).split("_").join(" ")}
+                        </td>
+                        <td>{parseFloat(value).toFixed(2)}</td>
+                      </tr>
+                    )
+                  )}
                 </tbody>
               </table>
             </div>

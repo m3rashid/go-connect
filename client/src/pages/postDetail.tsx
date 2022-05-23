@@ -13,7 +13,7 @@ import Loader from "../components/loader";
 import { useSelector } from "react-redux";
 
 const PostDetail = () => {
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state: any) => state.auth);
   const loggedUser = auth.user;
 
   const { postId } = useParams();
@@ -67,8 +67,9 @@ const PostDetail = () => {
   const iconContainerStyles =
     "select-none flex gap-2 items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md p-2 cursor-pointer";
 
-  const handleAddComment = async (e) => {
-    e.preventDefault();
+  const handleAddComment = async (
+    e: React.MouseEventHandler<HTMLButtonElement>
+  ) => {
     const comment = await handleCommentSubmit();
     setAllComments((prev) => [...prev, comment]);
   };
@@ -148,7 +149,7 @@ const PostDetail = () => {
               <div className="flex flex-col gap-2 items-end mb-2">
                 <textarea
                   style={{ whiteSpace: "pre-wrap" }}
-                  rows="3"
+                  rows={3}
                   placeholder="Add a comment"
                   className="outline-none rounded-md py-2 px-3 w-full resize-none bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
                   value={commentText}

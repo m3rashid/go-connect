@@ -1,6 +1,13 @@
 import React from "react";
 
-const Button = ({ classes, onClick, Icon, label }) => {
+interface IButton {
+  classes?: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  Icon?: any;
+  label: string | React.ReactNode;
+}
+
+const Button: React.FC<IButton> = ({ classes, onClick, Icon, label }) => {
   return (
     <>
       <div

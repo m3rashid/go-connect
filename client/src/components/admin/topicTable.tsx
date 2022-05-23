@@ -9,37 +9,37 @@ import Dialog from "./dialog";
 const TopicTable = () => {
   const { deleteTopic, updateTopic } = useTopic();
 
-  const topics = useSelector((state) => state.auth.topics);
+  const topics = useSelector((state: any) => state.auth.topics);
   const columns = React.useMemo(
     () => [
       {
         Header: "Topic",
         accessor: "name",
-        Cell: ({ cell }) => <>{cell.row.original.name}</>,
+        Cell: ({ cell }: { cell: any }) => <>{cell.row.original.name}</>,
       },
       {
         Header: "No. of Posts",
         accessor: "postCount",
-        Cell: ({ cell }) => <>{cell.row.original.postCount}</>,
+        Cell: ({ cell }: { cell: any }) => <>{cell.row.original.postCount}</>,
       },
       {
         Header: "Created",
         accessor: "createdAt",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: { cell: any }) => (
           <>{moment(cell.row.original.createdAt).format("lll")}</>
         ),
       },
       {
         Header: "Updated",
         accessor: "updatedAt",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: { cell: any }) => (
           <>{moment(cell.row.original.updatedAt).format("lll")}</>
         ),
       },
       {
         Header: "Actions",
         accessor: "",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: { cell: any }) => (
           <ActionButtons
             topicName={cell.row.original.name}
             topicID={cell.row.original.topicID}
@@ -50,7 +50,13 @@ const TopicTable = () => {
     []
   );
 
-  const ActionButtons = ({ topicName, topicID }) => (
+  const ActionButtons = ({
+    topicName,
+    topicID,
+  }: {
+    topicName: string;
+    topicID: string;
+  }) => (
     <div className="flex gap-2 items-center">
       <Dialog
         isDeleteDialog={true}
@@ -62,7 +68,7 @@ const TopicTable = () => {
         isDeleteDialog={false}
         title="Edit Topic"
         content={topicName}
-        onConfirm={(newTopicName) => updateTopic(newTopicName, topicID)}
+        onConfirm={(newTopicName) => updateTopic(newTopicName || "", topicID)}
       />
     </div>
   );

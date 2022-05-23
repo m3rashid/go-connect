@@ -5,7 +5,12 @@ import { SERVER_ROOT_URL } from "../../store/constants";
 import { headers } from "../../hooks/globals";
 import { toast } from "react-toastify";
 
-export const SmallButton = ({ onClick, label }) => {
+interface ISmallButton {
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  label: any;
+}
+
+export const SmallButton: React.FC<ISmallButton> = ({ onClick, label }) => {
   return (
     <button
       onClick={onClick}
@@ -16,9 +21,17 @@ export const SmallButton = ({ onClick, label }) => {
   );
 };
 
-const FriendActions = ({ user: toID, friendshipStatus }) => {
+interface IFriendActions {
+  user: any;
+  friendshipStatus?: any;
+}
+
+const FriendActions: React.FC<IFriendActions> = ({
+  user: toID,
+  friendshipStatus,
+}) => {
   const [status, setStatus] = React.useState(friendshipStatus);
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state: any) => state.auth);
   const fromID = auth.user.userID;
   toID = toID.userID;
 
@@ -57,7 +70,7 @@ const FriendActions = ({ user: toID, friendshipStatus }) => {
         setStatus("STRANGERS");
       })
       .catch(() => toast.error("Error loading post"));
-  }
+  };
 
   const unfriend = () => {
     const body = JSON.stringify({ fromID, toID });

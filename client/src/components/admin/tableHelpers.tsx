@@ -5,7 +5,11 @@ import { FaSearch } from "react-icons/fa";
 import Input from "../atoms/input";
 import { Link } from "react-router-dom";
 
-export const StatusPill = ({ value }) => {
+interface IStatusPill {
+  value: string;
+}
+
+export const StatusPill: React.FC<IStatusPill> = ({ value }) => {
   const status = value ? value.toLowerCase() : "unknown";
   return (
     <span
@@ -19,7 +23,13 @@ export const StatusPill = ({ value }) => {
   );
 };
 
-export const AvatarCell = ({ value, column, row }) => {
+interface IAvatarCell {
+  value: any;
+  column: any;
+  row: any;
+}
+
+export const AvatarCell: React.FC<IAvatarCell> = ({ value, column, row }) => {
   return (
     <div className="flex items-center">
       <div className="flex-shrink-0 h-10 w-10">
@@ -39,7 +49,19 @@ export const AvatarCell = ({ value, column, row }) => {
   );
 };
 
-export const Button = ({ children, className, onClick, disabled }) => {
+interface IButton {
+  children: any;
+  className?: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
+}
+
+export const Button: React.FC<IButton> = ({
+  children,
+  className,
+  onClick,
+  disabled,
+}) => {
   return (
     <button
       type="button"
@@ -55,13 +77,28 @@ export const Button = ({ children, className, onClick, disabled }) => {
   );
 };
 
-export const PageButton = ({ children, className, ...rest }) => {
+interface IPageButton {
+  children: any;
+  className?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
+}
+
+export const PageButton: React.FC<IPageButton> = ({
+  children,
+  className,
+  onClick,
+  disabled = false,
+  ...rest
+}) => {
   return (
     <button
       type="button"
       className={`
         "relative inline-flex items-center p-2 text-sm font-medium text-accentOne hover:bg-accentTwo 
         ${className}`}
+      onClick={onClick}
+      disabled={disabled}
       {...rest}
     >
       {children}
@@ -69,7 +106,13 @@ export const PageButton = ({ children, className, ...rest }) => {
   );
 };
 
-export const GlobalFilter = ({
+interface IGlobalFilter {
+  preGlobalFilteredRows: any;
+  globalFilter: any;
+  setGlobalFilter: any;
+}
+
+export const GlobalFilter: React.FC<IGlobalFilter> = ({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
@@ -84,7 +127,7 @@ export const GlobalFilter = ({
       <Input
         type="text"
         Icon={FaSearch}
-        border={false}
+        // border={false}
         value={value || ""}
         name="search"
         setValue={(e) => {
@@ -97,14 +140,25 @@ export const GlobalFilter = ({
   );
 };
 
-export const CustomFilter = ({
+interface ICustomFilter {
+  column: {
+    filterValue: any;
+    setFilter: any;
+    preFilteredRows: any;
+    id: any;
+    render: any;
+  };
+}
+
+export const CustomFilter: React.FC<ICustomFilter> = ({
   column: { filterValue, setFilter, preFilteredRows, id, render },
 }) => {
   const options = React.useMemo(() => {
     const options = new Set();
-    preFilteredRows.forEach((row) => {
+    preFilteredRows.forEach((row: any) => {
       options.add(row.values[id]);
     });
+    // @ts-ignore
     return [...options.values()];
   }, [id, preFilteredRows]);
 
@@ -133,7 +187,11 @@ export const CustomFilter = ({
   );
 };
 
-export const WidgetSingle = ({ data, label }) => {
+interface IWidgetSingle {
+  data: any;
+  label: string;
+}
+export const WidgetSingle: React.FC<IWidgetSingle> = ({ data, label }) => {
   return (
     <div className="bg-accentTwo p-4 rounded-md w-full min-w-[250px]  md:w-[500px] max-w-[600px] shadow-lg">
       <div className="w-full h-full py-4">
@@ -150,11 +208,19 @@ export const WidgetSingle = ({ data, label }) => {
   );
 };
 
-export const TableHeader = ({ title }) => {
+interface ITableHeader {
+  title: string;
+}
+export const TableHeader: React.FC<ITableHeader> = ({ title }) => {
   return <h1 className="text-xl font-bold">{title}</h1>;
 };
 
-export const HeaderLink = ({ to, children }) => {
+interface IHeaderLink {
+  to: string;
+  children: any;
+}
+
+export const HeaderLink: React.FC<IHeaderLink> = ({ to, children }) => {
   return (
     <div className="dark:text-gray-50 font-semibold">
       <Link to={to}>{children}</Link>

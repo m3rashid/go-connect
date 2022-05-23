@@ -16,8 +16,8 @@ import { getPosts } from "../store/actions/post.action";
 const usePost = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
-  const theme = useSelector((state) => state.ui.theme);
-  const { topics, avatar, user } = useSelector((state) => state.auth);
+  const theme = useSelector((state: any) => state.ui.theme);
+  const { topics, avatar, user } = useSelector((state: any) => state.auth);
   const [text, setText] = React.useState({ title: "", body: "", topicId: "" });
   const maxTitleLength = 170;
   const maxBodyLength = 10000;
@@ -25,19 +25,19 @@ const usePost = () => {
   const options =
     topics &&
     topics.length &&
-    topics.reduce((acc, curr) => {
+    topics.reduce((acc: any, curr: any) => {
       return [...acc, { value: curr.topicID, label: curr.name }];
     }, []);
 
-  const handleTopicChange = ({ value }) => {
+  const handleTopicChange = ({ value }: { value: any }) => {
     setText((prev) => ({ ...prev, topicId: value }));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setText((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (text.title.length > maxTitleLength + 10) {
       toast.error(`Title cannot be more than ${maxTitleLength} characters`);
@@ -56,7 +56,16 @@ const usePost = () => {
     try {
       setLoading(true);
       const threshold = 0.9;
-      const model = await toxicity.load(threshold);
+      // TODO add toxicity labels
+      const model = await toxicity.load(threshold, [
+        "identity_attack",
+        "insult",
+        "obscene",
+        "severe_toxicity",
+        "sexual_explicit",
+        "threat",
+        "toxicity",
+      ]);
       const sentence = text.title + ". " + text.body.replace("\n", ". ");
       const predictions = await model.classify(sentence);
       const toxic = predictions[6].results[0].probabilities[1].toFixed(4);
@@ -79,7 +88,7 @@ const usePost = () => {
         { headers }
       );
       toast.success("Post added successfully");
-      dispatch(getPosts(user));
+      dispatch(getPosts({ userID: user.userID }) as any);
     } catch (err) {
       toast.error("Error creating post");
     }
@@ -87,7 +96,7 @@ const usePost = () => {
     setText({ title: "", body: "", topicId: "" });
   };
 
-  const deletePost = async (postID) => {
+  const deletePost = async (postID: string) => {
     const postToast = toast.loading("Deleting post...");
     const body = JSON.stringify({ postID });
     try {

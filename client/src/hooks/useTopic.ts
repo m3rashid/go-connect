@@ -14,7 +14,7 @@ const useTopic = () => {
   const dispatch = useDispatch();
   const [topicName, setTopicName] = React.useState("");
 
-  const deleteTopic = async (topicID) => {
+  const deleteTopic = async (topicID: string) => {
     const topicToast = toast.loading("Deleting topic...");
     const body = JSON.stringify({ topicID });
     try {
@@ -24,7 +24,7 @@ const useTopic = () => {
         tokenConfig()
       );
       dispatch({ type: DELETE_TOPIC_SUCCESS, payload: res.data });
-      dispatch(getTopics());
+      dispatch(getTopics() as any);
       setTimeout(() => {
         toast.update(topicToast, {
           render: "Successfully deleted Topic",
@@ -43,7 +43,7 @@ const useTopic = () => {
     }
   };
 
-  const updateTopic = async (topicName, topicID) => {
+  const updateTopic = async (topicName: string, topicID: string) => {
     const topicToast = toast.loading("Updating topic...");
     const body = JSON.stringify({ topicName, topicID });
     try {

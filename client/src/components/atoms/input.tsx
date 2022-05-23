@@ -1,7 +1,17 @@
 import React from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const Input = ({
+interface IInput {
+  Icon?: typeof FaEye;
+  type: string;
+  name: string;
+  placeholder: string;
+  value: string | number | readonly string[] | undefined;
+  setValue: React.ChangeEventHandler<HTMLInputElement>;
+  className?: string;
+}
+
+const Input: React.FC<IInput> = ({
   Icon,
   type,
   name,
@@ -9,6 +19,7 @@ const Input = ({
   value,
   setValue,
   className,
+  ...props
 }) => {
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -25,6 +36,7 @@ const Input = ({
             type={
               type === "password" ? (showPassword ? "text" : "password") : type
             }
+            {...props}
             name={name}
             value={value}
             placeholder={placeholder}
@@ -35,7 +47,6 @@ const Input = ({
             <div className="cursor-pointer p-2 rounded-md">
               <span
                 className="dark:text-gray-200"
-                size="xl"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}

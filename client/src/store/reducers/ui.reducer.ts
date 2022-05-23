@@ -15,11 +15,15 @@ const checkTheme = () => {
   }
 };
 
-const initialState = {
+interface IThemeState {
+  theme: "dark" | "light" | (() => "dark" | "light");
+}
+
+const initialState: IThemeState = {
   theme: checkTheme(),
 };
 
-const UiReducer = (state = initialState, action) => {
+const UiReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case DARK_MODE:
       window.localStorage.theme = "dark";

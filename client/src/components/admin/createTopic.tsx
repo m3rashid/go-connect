@@ -21,7 +21,6 @@ const CreateTopic = () => {
         <div className="flex flex-col items-end gap-2">
           <Input
             name="topicName"
-            id="topicName"
             type="text"
             Icon={FaHashtag}
             placeholder="Enter topic name"

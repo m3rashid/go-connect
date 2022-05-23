@@ -18,7 +18,13 @@ import Select from "react-select";
 
 import { Button, PageButton, GlobalFilter } from "./tableHelpers";
 
-export const Table = ({ columns, data, title }) => {
+interface ITableProps {
+  columns: any;
+  data: any;
+  title: string | React.ReactNode;
+}
+
+export const Table: React.FC<ITableProps> = ({ columns, data, title }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -110,11 +116,11 @@ export const Table = ({ columns, data, title }) => {
                     {...getTableBodyProps()}
                     className="bg-gray-50 dark:bg-gray-700 divide-y divide-gray-500 dark:divide-gray-100"
                   >
-                    {page.map((row, i) => {
+                    {page.map((row: any, i: number) => {
                       prepareRow(row);
                       return (
                         <tr {...row.getRowProps()}>
-                          {row.cells.map((cell) => {
+                          {row.cells.map((cell: any) => {
                             return (
                               <td
                                 {...cell.getCellProps()}

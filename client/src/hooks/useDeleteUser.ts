@@ -11,7 +11,7 @@ import {
 const useDeleteUser = () => {
   const dispatch = useDispatch();
 
-  const deleteUser = async (userID, avatarID) => {
+  const deleteUser = async (userID: string, avatarID: string) => {
     const userToast = toast.loading("Deleting User...");
     const body = JSON.stringify({ userID, avatarID });
     try {

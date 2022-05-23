@@ -18,7 +18,7 @@ const genderOptions = [
 ];
 
 const EditProfileDetails = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state: any) => state.auth.user);
   const dispatch = useDispatch();
   const [profile, setProfile] = React.useState({
     firstName: user.firstName,
@@ -29,11 +29,14 @@ const EditProfileDetails = () => {
     dob: moment(user.dob).format("YYYY-MM-DD") || "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
-  const handleSelectChange = ({ value }, { name }) => {
+  const handleSelectChange = (
+    { value }: { value: any },
+    { name }: { name: string }
+  ) => {
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -42,7 +45,7 @@ const EditProfileDetails = () => {
       toast.warn("Insufficient data provided");
       return;
     }
-    if (profile.dob === '') profile.dob = null;
+    if (profile.dob === "") profile.dob = "";
     const t3 = toast.loading("Updating profile ... ");
     try {
       const body = JSON.stringify({ profile });
@@ -124,7 +127,7 @@ const EditProfileDetails = () => {
             options={genderOptions}
             value={profile.gender}
             placeholder={profile.gender}
-            onChange={handleSelectChange}
+            onChange={handleSelectChange as any}
             name="gender"
           />
         </LabelContainer>

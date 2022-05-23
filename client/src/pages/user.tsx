@@ -14,15 +14,16 @@ import Loader from "../components/loader";
 import FriendActions, { SmallButton } from "../components/user/profile";
 import ChangePassword from "../components/user/changePassword";
 import EditProfileDetails from "../components/user/editProfile";
+import { IAvatar } from "../interfaces/avatar";
 
 const User = () => {
   const location = useLocation();
-  const auth = useSelector((state) => state.auth);
-  const [isMe, setIsMe] = React.useState(null);
-  const [otherUser, setOtherUser] = React.useState(null);
+  const auth = useSelector((state: any) => state.auth);
+  const [isMe, setIsMe] = React.useState<boolean>();
+  const [otherUser, setOtherUser] = React.useState<any>({});
   const [friendshipStatus, setFriendshipStatus] = React.useState("");
 
-  const getAnotherUser = async (userId) => {
+  const getAnotherUser = async (userId: string) => {
     try {
       const res = await axios.post(
         `${SERVER_ROOT_URL}/auth/other-user`,
@@ -32,7 +33,7 @@ const User = () => {
       const data = await res.data;
       setOtherUser(data);
       setFriendshipStatus(data.status);
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message || "Error in getting data");
     }
   };
@@ -49,14 +50,16 @@ const User = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const theme = useSelector((state) => state.ui.theme);
+  const theme = useSelector((state: any) => state.ui.theme);
 
   if (!isMe && !otherUser) {
     return <Loader />;
   }
 
   const user = isMe ? auth.user : otherUser.user;
-  const avatarSettings = genConfig(isMe ? auth.avatar : otherUser.avatar);
+  const avatarSettings = genConfig(
+    isMe ? (auth.avatar as IAvatar) : (otherUser.avatar as IAvatar)
+  );
 
   const handleThemeChange = () => {
     theme === "dark" ? dispatch(lightMode()) : dispatch(darkMode());
@@ -67,7 +70,7 @@ const User = () => {
     navigate("/login", { replace: true });
   };
 
-  const Tr = ({ label, data }) => {
+  const Tr = ({ label, data }: { label: string; data: string }) => {
     return (
       <tr>
         <td className="pr-4">{label}</td>

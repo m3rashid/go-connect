@@ -4,8 +4,12 @@ import { Link } from "react-router-dom";
 
 import Loader from "../loader";
 
-const RightSidebar = ({ fullWidth }) => {
-  const topics = useSelector((state) => state.auth.topics);
+interface IRightSidebar {
+  fullWidth?: boolean;
+}
+
+const RightSidebar: React.FC<IRightSidebar> = ({ fullWidth }) => {
+  const topics = useSelector((state: any) => state.auth.topics);
 
   return (
     <>
@@ -23,7 +27,7 @@ const RightSidebar = ({ fullWidth }) => {
             } overflow-auto`}
           >
             <h3 className="font-bold text-2xl">Topics</h3>
-            {topics.map((topic) => (
+            {topics.map((topic: any) => (
               <Link to={"/topic/" + topic.topicID} key={topic.topicID}>
                 <div className="my-2 py-2 px-2 mr-4 rounded-md font-medium hover:bg-gray-100 hover:dark:bg-gray-700">
                   # {topic.name}

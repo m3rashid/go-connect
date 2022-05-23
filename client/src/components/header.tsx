@@ -5,13 +5,14 @@ import Avatar, { genConfig } from "react-nice-avatar";
 import { Link } from "react-router-dom";
 
 import { SearchBox } from "./searchBox";
+import { IAvatar } from "../interfaces/avatar";
 
 const Header = () => {
-  const searchRef = React.useRef();
+  const searchRef = React.useRef<any>();
   const [searchOpen, setSearchOpen] = React.useState(false);
 
-  const auth = useSelector((state) => state.auth);
-  const avatarConfig = auth.avatar;
+  const auth = useSelector((state: any) => state.auth);
+  const avatarConfig: IAvatar = auth.avatar;
   const user = auth.user;
 
   const avatarSettings = genConfig(avatarConfig);
@@ -54,7 +55,6 @@ const Header = () => {
                     : "p-3 hover:bg-gray-200 dark:hover:bg-gray-500"
                 }`}
                 onClick={() => setSearchOpen(true)}
-                size="xl"
               >
                 <FaSearch size={20} />
               </span>

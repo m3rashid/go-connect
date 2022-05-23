@@ -7,7 +7,14 @@ import Input from "../atoms/input";
 import { SmallButton } from "./profile";
 import { SERVER_ROOT_URL, tokenConfig } from "../../store/constants";
 
-export const LabelContainer = ({ label, children }) => {
+interface ILabelContainer {
+  label: string;
+  children: any;
+}
+export const LabelContainer: React.FC<ILabelContainer> = ({
+  label,
+  children,
+}) => {
   return (
     <div className="w-full flex flex-row items-center justify-between gap-3">
       <label className="flex-shrink-0">{label}</label>
@@ -22,7 +29,7 @@ const ChangePassword = () => {
     oldPassword: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPassword((prev) => ({ ...prev, [name]: value }));
   };

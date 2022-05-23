@@ -1,7 +1,11 @@
 import React from "react";
 import moment from "moment";
 
-export const SentMessage = ({ chat }) => {
+interface IChat {
+  chat: any;
+}
+
+export const SentMessage: React.FC<IChat> = ({ chat }) => {
   return (
     <div className="flex flex-col gap-1">
       <div className="bg-gray-50 dark:bg-gray-900 rounded-md shadow-md p-2 self-end min-w-[150px] max-w-[320px]">
@@ -15,7 +19,7 @@ export const SentMessage = ({ chat }) => {
   );
 };
 
-export const ReceivedMessage = ({ chat }) => {
+export const ReceivedMessage: React.FC<IChat> = ({ chat }) => {
   return (
     <div className="flex flex-col gap-1">
       <div className="dark:bg-gray-700 dark:text-gray-200 p-2 self-start rounded-md shadow-md  min-w-[150px] max-w-[320px]">

@@ -79,7 +79,7 @@ const useLogin = () => {
     }
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: any) => {
     if (!credentials.isAdmin) {
       userLogin();
     } else {
@@ -88,7 +88,7 @@ const useLogin = () => {
     setCredentials({ username: "", password: "", isAdmin: false });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 

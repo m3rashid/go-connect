@@ -8,30 +8,32 @@ import useDeleteUser from "../../hooks/useDeleteUser";
 
 const UserTable = () => {
   const { deleteUser } = useDeleteUser();
-  const users = useSelector((state) => state.auth.users);
+  const users = useSelector((state: any) => state.auth.users);
   const columns = React.useMemo(
     () => [
       {
         Header: "Username",
         accessor: "userName",
-        Cell: ({ cell }) => <>{cell.row.original.userName}</>,
+        Cell: ({ cell }: { cell: any }) => <>{cell.row.original.userName}</>,
       },
       {
         Header: "Name",
         accessor: "",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: { cell: any }) => (
           <>{cell.row.original.firstName + " " + cell.row.original.lastName}</>
         ),
       },
       {
         Header: "Email",
         accessor: "email",
-        Cell: ({ cell }) => <>{cell.row.original.email}</>,
+        Cell: ({ cell }: { cell: any }) => <>{cell.row.original.email}</>,
       },
       {
         Header: "Phone",
         accessor: "phNumber",
-        Cell: ({ cell }) => <>{cell.row.original.phNumber || "--"}</>,
+        Cell: ({ cell }: { cell: any }) => (
+          <>{cell.row.original.phNumber || "--"}</>
+        ),
       },
       {
         Header: "Reputation",
@@ -41,21 +43,21 @@ const UserTable = () => {
       {
         Header: "Created",
         accessor: "createdAt",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: { cell: any }) => (
           <>{moment(cell.row.original.createdAt).format("lll")}</>
         ),
       },
       {
         Header: "Updated",
         accessor: "updatedAt",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: { cell: any }) => (
           <>{moment(cell.row.original.updatedAt).format("lll")}</>
         ),
       },
       {
         Header: "Actions",
         accessor: "",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: { cell: any }) => (
           <ActionButtons
             userID={cell.row.original.userID}
             avatarID={cell.row.original.avatarID}
@@ -66,7 +68,13 @@ const UserTable = () => {
     []
   );
 
-  const ActionButtons = ({ userID, avatarID }) => (
+  const ActionButtons = ({
+    userID,
+    avatarID,
+  }: {
+    userID: string;
+    avatarID: string;
+  }) => (
     <div className="flex gap-2 items-center">
       <Dialog
         isDeleteDialog={true}

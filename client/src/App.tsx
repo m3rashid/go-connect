@@ -9,9 +9,9 @@ import { AdminPage, LoginPage, UserPage } from "./components/routes";
 
 const App = () => {
   const { isAuthUser: userLoggedIn, isAuthAdmin: adminLoggedIn } = useSelector(
-    (state) => state.auth
+    (state: any) => state.auth
   );
-  const theme = useSelector((state) => state.ui.theme);
+  const theme = useSelector((state: any) => state.ui.theme);
   const dispatch = useDispatch();
 
   React.useEffect(() => {

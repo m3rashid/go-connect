@@ -24,22 +24,28 @@ export const logout = () => {
 
 export const userLoading = () => ({ type: USER_LOADING });
 export const adminLoading = () => ({ type: ADMIN_LOADING });
-export const changeAvatar = (config) => ({
+export const changeAvatar = (config: any) => ({
   type: AVATAR_CHANGE,
   payload: config,
 });
 
-export const updateProfile = (data) => ({
+export const updateProfile = (data: any) => ({
   type: UPDATE_PROFILE,
   payload: data,
 });
 
-export const forgotPassword = ({ username, email }) => ({
+export const forgotPassword = ({
+  username,
+  email,
+}: {
+  username: string;
+  email: string;
+}) => ({
   type: FORGOT_PASSWORD,
   payload: { username, email },
 });
 
-export const loadUser = () => async (dispatch) => {
+export const loadUser = () => async (dispatch: any) => {
   try {
     const lastLogin = localStorage.getItem("lastLogin");
     if (!lastLogin || lastLogin === "user") {
@@ -61,7 +67,7 @@ export const loadUser = () => async (dispatch) => {
   }
 };
 
-export const getTopics = () => async (dispatch) => {
+export const getTopics = () => async (dispatch: any) => {
   try {
     const res = await axios.get(
       `${SERVER_ROOT_URL}/admin/topics`,

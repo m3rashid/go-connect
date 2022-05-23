@@ -25,7 +25,7 @@ const CreatePost = () => {
         <div className="flex flex-col bg-gray-50 dark:bg-gray-900 items-end gap-2 p-4 rounded-b-md">
           {!loading && (
             <textarea
-              rows="2"
+              rows={2}
               value={text.title}
               name="title"
               placeholder="Share something interesting"

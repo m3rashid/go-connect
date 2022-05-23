@@ -11,7 +11,7 @@ export const SearchBox = () => {
   const [topics, setTopics] = React.useState([]);
   const [users, setUsers] = React.useState([]);
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: any) => {
     if (e.target.value === "") {
       setTopics([]);
       setUsers([]);

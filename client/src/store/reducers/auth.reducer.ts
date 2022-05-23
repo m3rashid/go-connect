@@ -25,14 +25,14 @@ const initialState = {
   isAuthAdmin: false,
   token: "",
   isLoading: false,
-  user: null,
+  user: {},
   avatar: null,
   users: null,
   topics: null,
   posts: [],
 };
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case DELETE_USER_SUCCESS:
       return { ...state, users: action.payload.users };

@@ -2,15 +2,22 @@ import moment from "moment";
 import React from "react";
 import Avatar from "react-nice-avatar";
 import { Link } from "react-router-dom";
+import { IAvatar } from "../../interfaces/avatar";
 
 import Loader from "../loader";
 
-const Notif = ({ notif, bgColor, isNotification }) => {
+interface INotif {
+  notif?: any;
+  bgColor?: string;
+  isNotification?: boolean;
+}
+
+const Notif: React.FC<INotif> = ({ notif, bgColor, isNotification = true }) => {
   if (!notif.avatarID) {
     return <Loader />;
   }
 
-  const avatar = {
+  const avatar: IAvatar = {
     avatarID: notif.avatarID,
     sex: notif.sex,
     faceColor: notif.faceColor,
@@ -49,7 +56,7 @@ const Notif = ({ notif, bgColor, isNotification }) => {
               {moment(notif.comment_createdAt).format("DD/MM/YYYY hh:mm A")}
             </span>
           </div>
-          <div className={isNotification && "my-1"}>{notif.text}</div>
+          <div className={isNotification ? "my-1" : ""}>{notif.text}</div>
         </div>
       </div>
     </>

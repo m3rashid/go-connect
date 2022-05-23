@@ -11,16 +11,16 @@ import { useSelector } from "react-redux";
 import Loader from "../components/loader";
 
 const Topic = () => {
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state: any) => state.auth);
   const loggedUser = auth.user;
 
   const { topicId } = useParams();
   const { userID: userId } = loggedUser;
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const topics = useSelector((state) => state.auth.topics);
+  const topics = useSelector((state: any) => state.auth.topics);
 
-  const pageTopic = topics.filter((t) => t.topicID === topicId)[0];
+  const pageTopic = topics.filter((t: any) => t.topicID === topicId)[0];
 
   React.useEffect(() => {
     setLoading(true);

@@ -13,10 +13,15 @@ import {
   removeBookmark,
   removeLike,
 } from "../store/actions/post.action";
+import { IAvatar } from "../interfaces/avatar";
 
 const maxBodyLength = 10000;
 
-const usePostDetail = (singlePost, classification, loggedUser) => {
+const usePostDetail = (
+  singlePost: any,
+  classification: any,
+  loggedUser: any
+) => {
   const user = {
     userName: singlePost.userName,
     userId: singlePost.userID,
@@ -28,7 +33,7 @@ const usePostDetail = (singlePost, classification, loggedUser) => {
     gender: singlePost.gender,
   };
 
-  const avatar = {
+  const avatar: IAvatar = {
     avatarID: singlePost.avatarID,
     sex: singlePost.sex,
     faceColor: singlePost.faceColor,
@@ -101,10 +106,10 @@ const usePostDetail = (singlePost, classification, loggedUser) => {
 
   const handleLikeSubmit = () => {
     if (isLiked) {
-      dispatch(removeLike(loggedUser.userID, postDetail.postID));
+      dispatch(removeLike(loggedUser.userID, postDetail.postID) as any);
       setLikes(Likes - 1);
     } else {
-      dispatch(addLike(loggedUser.userID, postDetail.postID));
+      dispatch(addLike(loggedUser.userID, postDetail.postID) as any);
       setLikes(Likes + 1);
     }
     setLiked(!isLiked);
@@ -145,14 +150,14 @@ const usePostDetail = (singlePost, classification, loggedUser) => {
 
   const handleBookmark = () => {
     Bookmarked
-      ? dispatch(removeBookmark(loggedUser.userID, postDetail.postID))
-      : dispatch(addBookmark(loggedUser.userID, postDetail.postID));
+      ? dispatch(removeBookmark(loggedUser.userID, postDetail.postID) as any)
+      : dispatch(addBookmark(loggedUser.userID, postDetail.postID) as any);
     setBookmarked(!Bookmarked);
   };
 
   const inputCharLength = commentText.length > 0;
 
-  const handleCommentChange = (e) => {
+  const handleCommentChange = (e: any) => {
     setCommentText(e.target.value);
   };
 
