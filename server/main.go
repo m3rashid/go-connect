@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"log"
 	"time"
 
@@ -14,6 +15,7 @@ const mongodbUri = "mongodb://localhost:27017/jmi-connect"
 
 func main() {
 	app := fiber.New()
+	app.Use(logger.New())
 
 	clientOptions := options.Client().ApplyURI(mongodbUri)
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
