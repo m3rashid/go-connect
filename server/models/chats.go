@@ -1,13 +1,11 @@
 package models
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "gopkg.in/mgo.v2/bson"
 
 type Chats struct {
-	ChatID    primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	UserID    primitive.ObjectID `json:"userID,omitempty" bson:"userID,omitempty"`
-	UserName  string             `json:"userName"`
-	Message   string             `json:"message"`
-	CreatedAt primitive.DateTime `json:"createdAt"`
+	ChatID    bson.ObjectId       `json:"_id,omitempty" bson:"_id,omitempty"`
+	UserID    bson.ObjectId       `json:"userID,omitempty" bson:"userID,omitempty"`
+	UserName  string              `json:"userName" bson:"userName"`
+	Message   string              `json:"message" bson:"message"`
+	CreatedAt bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
 }

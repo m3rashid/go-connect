@@ -1,13 +1,11 @@
 package models
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "gopkg.in/mgo.v2/bson"
 
 type Bookmarks struct {
-	BookmarkID primitive.ObjectID `json:"_id,omitempty" bson:"_id"`
-	Post       primitive.ObjectID `json:"post,omitempty"`
-	User       primitive.ObjectID `json:"user"`
-	CreatedAt  primitive.DateTime `json:"createdAt"`
-	UpdatedAt  primitive.DateTime `json:"updatedAt"`
+	BookmarkID bson.ObjectId       `json:"_id,omitempty" bson:"_id"`
+	Post       bson.ObjectId       `json:"post,omitempty" bson:"post"`
+	User       bson.ObjectId       `json:"user" bson:"user"`
+	CreatedAt  bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
+	UpdatedAt  bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

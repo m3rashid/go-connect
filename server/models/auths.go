@@ -1,20 +1,18 @@
 package models
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "gopkg.in/mgo.v2/bson"
 
 type Auths struct {
-	UserID    primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	UserName  string             `json:"userName"`
-	FirstName string             `json:"firstName"`
-	LastName  string             `json:"lastName"`
-	Email     string             `json:"email"`
-	PhNumber  string             `json:"phNumber"`
-	Gender    string             `json:"gender"`
-	Password  string             `json:"password"`
-	AvatarID  primitive.ObjectID `json:"avatarID,omitempty"`
-	Dob       primitive.DateTime `json:"dob"`
-	CreatedAt primitive.DateTime `json:"createdAt"`
-	UpdatedAt primitive.DateTime `json:"updatedAt"`
+	UserID    bson.ObjectId       `json:"_id,omitempty" bson:"_id,omitempty"`
+	UserName  string              `json:"userName" bson:"userName"`
+	FirstName string              `json:"firstName" bson:"firstName"`
+	LastName  string              `json:"lastName" bson:"lastName"`
+	Email     string              `json:"email" bson:"email"`
+	PhNumber  string              `json:"phNumber" bson:"phNumber"`
+	Gender    string              `json:"gender" bson:"gender"`
+	Password  string              `json:"password" bson:"password"`
+	AvatarID  bson.ObjectId       `json:"avatarID,omitempty" bson:"avatarID"`
+	Dob       bson.MongoTimestamp `json:"dob" bson:"dob"`
+	CreatedAt bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
+	UpdatedAt bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

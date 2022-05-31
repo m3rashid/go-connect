@@ -1,18 +1,16 @@
 package models
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "gopkg.in/mgo.v2/bson"
 
 type Posts struct {
-	PostID         primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty,"`
-	Title          string             `json:"title"`
-	Description    string             `json:"description"`
-	TopicID        primitive.ObjectID `json:"topicID,omitempty" bson:"topicID,omitempty"`
-	UserID         primitive.ObjectID `json:"userID,omitempty" bson:"userID,omitempty"`
-	Likes          int32              `json:"likes"`
-	PostReputation primitive.ObjectID `json:"postReputation,omitempty" bson:"postReputation,omitempty"`
-	CommentsCount  int32              `json:"commentsCount"`
-	CreatedAt      primitive.DateTime `json:"createdAt"`
-	UpdatedAt      primitive.DateTime `json:"updatedAt"`
+	PostID         bson.ObjectId       `json:"_id,omitempty" bson:"_id,omitempty,"`
+	Title          string              `json:"title" bson:"title"`
+	Description    string              `json:"description" bson:"description"`
+	TopicID        bson.ObjectId       `json:"topicID,omitempty" bson:"topicID,omitempty"`
+	UserID         bson.ObjectId       `json:"userID,omitempty" bson:"userID,omitempty"`
+	Likes          int32               `json:"likes" bson:"likes"`
+	PostReputation bson.ObjectId       `json:"postReputation,omitempty" bson:"postReputation,omitempty"`
+	CommentsCount  int32               `json:"commentsCount" bson:"commentsCount"`
+	CreatedAt      bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
+	UpdatedAt      bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }
