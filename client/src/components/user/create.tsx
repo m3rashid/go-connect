@@ -13,10 +13,6 @@ const CreatePost = () => {
     handleTopicChange,
   } = usePost();
 
-  const [topicState, setTopicState] = React.useState([
-    { label: "topic", value: "" },
-  ]);
-
   return (
     <>
       <div className="flex flex-col w-full bg-gray-50 dark:bg-gray-900 rounded-md shadow-md">
@@ -56,8 +52,8 @@ const CreatePost = () => {
                       placeholder="Select Topic"
                       options={options}
                       name="topicId"
-                      onChange={(e) => handleTopicChange(e)}
-                      value={topicState[0][text.topicId]}
+                      onChange={(e) => handleTopicChange(e as any)}
+                      value={""}
                     />
                   )}
                 </div>

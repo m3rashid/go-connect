@@ -56,7 +56,6 @@ const usePost = () => {
     try {
       setLoading(true);
       const threshold = 0.9;
-      // TODO add toxicity labels
       const model = await toxicity.load(threshold, [
         "identity_attack",
         "insult",

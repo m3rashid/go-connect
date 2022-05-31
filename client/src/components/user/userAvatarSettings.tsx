@@ -19,12 +19,12 @@ const UserAvatarSettings = () => {
     { value }: { value: any },
     { name }: { name: any }
   ) => {
-    setAvatarData((prev) => ({ ...prev, [name]: value }));
+    setAvatarData((prev: any) => ({ ...prev, [name]: value }));
   };
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setAvatarData((prev) => ({ ...prev, [name]: value }));
+    setAvatarData((prev: any) => ({ ...prev, [name]: value }));
   };
 
   const saveToDatabase = async () => {
@@ -53,7 +53,7 @@ const UserAvatarSettings = () => {
     }
   };
 
-  const [avatarData, setAvatarData] = React.useState<IAvatar>(avatarConfig);
+  const [avatarData, setAvatarData] = React.useState<any>(avatarConfig);
 
   const avatarSettings = genConfig(avatarData);
 
@@ -77,9 +77,9 @@ const UserAvatarSettings = () => {
               onChange={handleConfigChange as any}
               options={item.data}
               name={item.name}
-              value={avatarData[item.name] as any}
-              placeholder={avatarData[item.name] as any}
-              defaultValue={avatarData[item.name] as any}
+              value={avatarData[item.name]}
+              placeholder={avatarData[item.name]}
+              defaultValue={avatarData[item.name]}
             />
           </div>
         ))}

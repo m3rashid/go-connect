@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "../../components/atoms/Button";
 import useAdmin from "../../hooks/useAdmin";
 import { darkMode, lightMode } from "../../store/actions/ui.action";
-const CreateTopic = React.lazy(() =>
-  import("../../components/admin/createTopic")
+const CreateTopic = React.lazy(
+  () => import("../../components/admin/createTopic")
 );
 
 const AdminHome = () => {
   const { handleLogout } = useAdmin();
   const dispatch = useDispatch();
-  const theme = useSelector((state) => state.ui.theme);
+  const theme = useSelector((state: any) => state.ui.theme);
 
   const handleThemeChange = () => {
     theme === "dark" ? dispatch(lightMode()) : dispatch(darkMode());

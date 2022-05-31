@@ -62,13 +62,14 @@ const Signup = () => {
           }),
         }}
         classNamePrefix="bg-gray-200 dark:bg-gray-800 outline-none"
-        options={data.data}
+        options={data.data as any}
         name={data.name}
         value={credentials.gender}
         onChange={changeGender}
         placeholder={credentials.gender ? credentials.gender : "Select gender"}
         defaultValue={credentials.gender}
-        label="Single Select"
+        // @ts-ignore
+        label={"Single Select"}
       />
       <Input
         name="password"

@@ -8,7 +8,7 @@ import { SERVER_ROOT_URL } from "../store/constants";
 import { headers } from "../hooks/globals";
 import Loader from "../components/loader";
 
-const getText = (notif, loggedInUserID) => {
+const getText = (notif: any, loggedInUserID: string) => {
   switch (notif.status) {
     case "REQUESTED":
       return notif.fromID === loggedInUserID
@@ -30,7 +30,7 @@ const getText = (notif, loggedInUserID) => {
 };
 
 const Notifications = () => {
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state: any) => state.auth);
   const loggedInUserID = auth.user.userID;
 
   const [notifs, setNotifs] = React.useState([]);
@@ -53,7 +53,7 @@ const Notifications = () => {
         {loading ? (
           <Loader />
         ) : notifs.length > 0 ? (
-          notifs.map((notif, index) => {
+          notifs.map((notif: any, index: number) => {
             const text = getText(notif, loggedInUserID);
             return (
               <Notif

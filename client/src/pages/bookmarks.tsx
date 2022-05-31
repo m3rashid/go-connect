@@ -7,24 +7,24 @@ import Loader from "../components/loader";
 
 const Bookmarks = () => {
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
-  const loading = useSelector((state) => state.posts.bookmarksLoading);
+  const auth = useSelector((state: any) => state.auth);
+  const loading = useSelector((state: any) => state.posts.bookmarksLoading);
   const user = auth.user;
 
   const [refresh, setRefresh] = React.useState(false);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(getAllBookmarks(user));
+    dispatch(getAllBookmarks(user) as any);
   }, [dispatch, user, refresh]);
 
   const Reload = () => {
     setRefresh(!refresh);
   };
 
-  const bookmarks = useSelector((state) =>
+  const bookmarks = useSelector((state: any) =>
     Object.values(state.posts.bookmarks).sort(
-      (a, b) => b.updatedAt - a.updatedAt
+      (a: any, b: any) => b.updatedAt - a.updatedAt
     )
   );
 
@@ -34,7 +34,7 @@ const Bookmarks = () => {
         {loading ? (
           <Loader />
         ) : bookmarks.length > 0 ? (
-          bookmarks.map((bookmark) => (
+          bookmarks.map((bookmark: any) => (
             <PostCard
               key={bookmark.bookmarkID}
               post={bookmark}

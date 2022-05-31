@@ -9,16 +9,18 @@ const PostCard = React.lazy(() => import("../components/user/postCard"));
 
 const Main = () => {
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
-  const loading = useSelector((state) => state.posts.postsLoading);
+  const auth = useSelector((state: any) => state.auth);
+  const loading = useSelector((state: any) => state.posts.postsLoading);
   const user = auth.user;
 
   React.useEffect(() => {
-    dispatch(getPosts(user));
+    dispatch(getPosts(user) as any);
   }, [dispatch, user]);
 
-  const posts = useSelector((state) =>
-    Object.values(state.posts.posts).sort((a, b) => b.updatedAt - a.updatedAt)
+  const posts = useSelector((state: any) =>
+    Object.values(state.posts.posts).sort(
+      (a: any, b: any) => b.updatedAt - a.updatedAt
+    )
   );
 
   return (
@@ -33,7 +35,7 @@ const Main = () => {
           <Loader />
         ) : (
           posts &&
-          posts.map((post) => (
+          posts.map((post: any) => (
             <PostCard key={post.postID} post={post} loggedUser={user} />
           ))
         )}

@@ -13,7 +13,7 @@ import { ReceivedMessage, SentMessage } from "../components/chat/helpers";
 const socket = io(`${SERVER_ROOT_URL}`);
 
 const Chat = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state: any) => state.auth.user);
   const [message, setMessage] = React.useState("");
   const [allChats, setAllChats] = React.useState([]);
 
@@ -60,9 +60,9 @@ const Chat = () => {
     if (!socket) return;
 
     socket.on("receive-message", (data) => {
-      const newChat = allChats.find((chat) => chat.id === data.id);
+      const newChat = allChats.find((chat: any) => chat.id === data.id);
       if (!newChat) {
-        setAllChats((prev) => [...prev, data]);
+        setAllChats((prev) => [...prev, data] as any);
       }
     });
 
@@ -89,7 +89,7 @@ const Chat = () => {
     <>
       <div className="flex flex-col justify-between dark:text-gray-200 md:w-auto m-[10px] bg-gray-200 dark:bg-gray-800 rounded-md shadow-md pt-6">
         <div className="flex flex-col gap-4 h-[calc(100vh-250px)] md:h-[calc(100vh-180px)] overflow-auto hide-scrollbar px-2 md:px-4 pb-4">
-          {allChats.map((chat) => {
+          {allChats.map((chat: any) => {
             if (chat.userID === user.userID) {
               return <SentMessage key={chat.id} chat={chat} />;
             } else {

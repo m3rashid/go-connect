@@ -1,4 +1,5 @@
 export interface IAvatar {
+  id?: string;
   sex: "man" | "woman";
   earSize: "small" | "big";
   hairStyle: "normal" | "thick" | "mohawk" | "womanLong" | "womanShort";

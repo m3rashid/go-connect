@@ -1,6 +1,6 @@
 import React from "react";
-const TopicTable = React.lazy(() =>
-  import("../../components/admin/topicTable")
+const TopicTable = React.lazy(
+  () => import("../../components/admin/topicTable")
 );
 
 const AdminTopic = () => {

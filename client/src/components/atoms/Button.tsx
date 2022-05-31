@@ -4,7 +4,7 @@ interface IButton {
   classes?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   Icon?: any;
-  label: string | React.ReactNode;
+  label?: string | React.ReactNode;
 }
 
 const Button: React.FC<IButton> = ({ classes, onClick, Icon, label }) => {

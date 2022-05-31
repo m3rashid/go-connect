@@ -1,4 +1,10 @@
-export const colorConfig = [
+interface IColor {
+  id: string;
+  label: string;
+  name: string;
+}
+
+export const colorConfig: IColor[] = [
   { id: "c1", label: "Face", name: "faceColor" },
   { id: "c2", label: "Hair", name: "hairColor" },
   { id: "c3", label: "Hat", name: "hatColor" },
@@ -6,7 +12,17 @@ export const colorConfig = [
   { id: "c5", label: "Back", name: "bgColor" },
 ];
 
-export const data = [
+interface IData {
+  id: string;
+  name: string;
+  label: string;
+  data: {
+    value: string;
+    label: string;
+  }[];
+}
+
+export const data: IData[] = [
   {
     id: "d1",
     name: "sex",

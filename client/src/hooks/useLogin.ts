@@ -85,15 +85,25 @@ const useLogin = () => {
     } else {
       adminLogin();
     }
-    setCredentials({ username: "", password: "", isAdmin: false });
+    setCredentials({
+      username: "",
+      password: "",
+      isAdmin: false,
+    });
   };
 
   const handleChange = (e: any) => {
-    setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setCredentials((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const toggleAdmin = () => {
-    setCredentials((prev) => ({ ...prev, isAdmin: !credentials.isAdmin }));
+    setCredentials((prev) => ({
+      ...prev,
+      isAdmin: !credentials.isAdmin,
+    }));
   };
 
   return {

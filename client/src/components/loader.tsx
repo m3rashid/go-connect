@@ -1,8 +1,10 @@
 import React from "react";
 
-// szeOptions = 10, 16, 32
+interface IProps {
+  size?: 10 | 16 | 32;
+}
 
-const Loader = ({ size = 16 }) => {
+const Loader: React.FC<IProps> = ({ size = 16 }) => {
   return (
     <div className="flex items-center justify-center m-8">
       <svg

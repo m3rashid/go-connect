@@ -15,8 +15,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(loadUser());
-    dispatch(getTopics());
+    dispatch(loadUser() as any);
+    dispatch(getTopics() as any);
   }, [dispatch]);
 
   return (

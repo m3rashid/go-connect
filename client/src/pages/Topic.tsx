@@ -46,20 +46,20 @@ const Topic = () => {
       <div className="w-full rightSidebarInMainPage">
         <RightSidebar fullWidth />
       </div>
-      {!posts.length > 0 ? (
-        <h3 className="text-center dark:text-gray-200 font-semibold text-2xl">
-          No Posts found for {pageTopic.name}
-        </h3>
-      ) : (
+      {posts.length > 0 ? (
         <>
           <h3 className="text-center dark:text-gray-200 font-semibold text-2xl">
             Posts found for &nbsp; # {pageTopic.name}
           </h3>
           {posts &&
-            posts.map((post) => (
+            posts.map((post: any) => (
               <PostCard key={post.postID} post={post} loggedUser={loggedUser} />
             ))}
         </>
+      ) : (
+        <h3 className="text-center dark:text-gray-200 font-semibold text-2xl">
+          No Posts found for {pageTopic.name}
+        </h3>
       )}
     </div>
   );

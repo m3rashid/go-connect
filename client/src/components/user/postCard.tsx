@@ -15,7 +15,7 @@ import { IAvatar } from "../../interfaces/avatar";
 interface ICard {
   post: any;
   loggedUser: any;
-  reload: () => void;
+  reload?: () => void;
 }
 
 const Card: React.FC<ICard> = ({ post, loggedUser, reload }) => {
