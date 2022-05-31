@@ -18,7 +18,7 @@ func NewBookmarksController(s *mgo.Session) *BookmarksController {
 }
 
 func (uc BookmarksController) RemoveBookmark(c *fiber.Ctx) error {
-	return c.SendString("Hello, World!")
+	return c.JSON("Hello, World!")
 }
 
 func (uc BookmarksController) AddBookmark(c *fiber.Ctx) error {
@@ -35,9 +35,9 @@ func (uc BookmarksController) AddBookmark(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}
-	return c.Send(back)
+	return c.JSON(back)
 }
 
 func (uc BookmarksController) GetAllBookmarks(c *fiber.Ctx) error {
-	return c.SendString("Hello, World!")
+	return c.JSON("Hello, World!")
 }
