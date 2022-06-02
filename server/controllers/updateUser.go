@@ -13,8 +13,14 @@ func NewUpdateUserController(s *mgo.Session) *UpdateUserController {
 	return &UpdateUserController{s}
 }
 
-func (uc UpdateUserController) UpdateAvatar(c *fiber.Ctx) error {}
+func (uc UpdateUserController) UpdateAvatar(c *fiber.Ctx) error {
+	return c.JSON("Hello World")
+}
 
-func (uc UpdateUserController) UpdatePassword(c *fiber.Ctx) error {}
+func (uc UpdateUserController) UpdatePassword(c *fiber.Ctx) error {
+	return c.JSON("Hello World")
+}
 
-func (uc UpdateUserController) UpdateProfile(c *fiber.Ctx) error {}
+func (uc UpdateUserController) UpdateProfile(c *fiber.Ctx) error {
+	return c.JSON("Hello World")
+}

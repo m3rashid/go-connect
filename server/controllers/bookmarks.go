@@ -18,7 +18,14 @@ func NewBookmarksController(s *mgo.Session) *BookmarksController {
 }
 
 func (uc BookmarksController) RemoveBookmark(c *fiber.Ctx) error {
-	return c.JSON("Hello, World!")
+	bookmark := models.Bookmarks{}
+	if err := c.BodyParser(&bookmark); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+	if err := uc.session.DB(models.DatabaseName).C(models.BookmarksCollectionName).Remove(bookmark); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+	return c.SendStatus(fiber.StatusOK)
 }
 
 func (uc BookmarksController) AddBookmark(c *fiber.Ctx) error {
@@ -39,5 +46,13 @@ func (uc BookmarksController) AddBookmark(c *fiber.Ctx) error {
 }
 
 func (uc BookmarksController) GetAllBookmarks(c *fiber.Ctx) error {
-	return c.JSON("Hello, World!")
+	bookmarks := []models.Bookmarks{}
+	if err := uc.session.DB(models.DatabaseName).C(models.BookmarksCollectionName).Find(nil).All(&bookmarks); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+	back, err := json.Marshal(bookmarks)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+	return c.JSON(back)
 }

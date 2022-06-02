@@ -13,4 +13,6 @@ func NewSearchController(s *mgo.Session) *SearchController {
 	return &SearchController{s}
 }
 
-func (uc SearchController) SearchUserAndTopic(c *fiber.Ctx) error {}
+func (uc SearchController) SearchUserAndTopic(c *fiber.Ctx) error {
+	return c.JSON("Hello World")
+}

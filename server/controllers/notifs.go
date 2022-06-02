@@ -13,4 +13,6 @@ func NewNotifsController(s *mgo.Session) *NotifsController {
 	return &NotifsController{s}
 }
 
-func (uc NotifsController) GetNotifications(c *fiber.Ctx) error {}
+func (uc NotifsController) GetNotifications(c *fiber.Ctx) error {
+	return c.JSON("Hello World")
+}
