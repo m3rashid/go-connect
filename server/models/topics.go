@@ -6,5 +6,4 @@ type Topics struct {
 	TopicID   bson.ObjectId       `json:"_id,omitempty" bson:"_id,omitempty"`
 	Name      string              `json:"name" bson:"name"`
 	CreatedAt bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
-	UpdatedAt bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

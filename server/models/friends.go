@@ -8,5 +8,4 @@ type Friends struct {
 	ToID         bson.ObjectId       `json:"toID,omitempty" bson:"toID,omitempty"`
 	Status       string              `json:"status" bson:"status"`
 	CreatedAt    bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
-	UpdatedAt    bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

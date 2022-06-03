@@ -12,5 +12,4 @@ type Posts struct {
 	PostReputation bson.ObjectId       `json:"postReputation,omitempty" bson:"postReputation,omitempty"`
 	CommentsCount  int32               `json:"commentsCount" bson:"commentsCount"`
 	CreatedAt      bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
-	UpdatedAt      bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

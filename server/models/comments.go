@@ -8,5 +8,4 @@ type Comments struct {
 	PostID    bson.ObjectId       `json:"postID,omitempty" bson:"postID,omitempty"`
 	Text      string              `json:"text" bson:"text"`
 	CreatedAt bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
-	UpdatedAt bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

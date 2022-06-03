@@ -7,5 +7,4 @@ type Bookmarks struct {
 	Post       bson.ObjectId       `json:"post,omitempty" bson:"post"`
 	User       bson.ObjectId       `json:"user" bson:"user"`
 	CreatedAt  bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
-	UpdatedAt  bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

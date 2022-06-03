@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type AuthsController struct {
@@ -45,10 +46,17 @@ func (uc AuthsController) Signup(c *fiber.Ctx) error {
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
+	user.UserID = bson.NewObjectId()
+	user.AvatarID = bson.NewObjectId()
+	// create a new avatar also with default config
 	if err := uc.session.DB(models.DatabaseName).C(models.AuthCollectionName).Insert(user); err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}
-	return c.SendStatus(fiber.StatusOK)
+	back, err := json.Marshal(user)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+	return c.JSON(back)
 }
 
 func (uc AuthsController) Login(c *fiber.Ctx) error {

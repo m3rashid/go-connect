@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type AdminsController struct {
@@ -68,9 +69,11 @@ func (uc AdminsController) CreateTopic(c *fiber.Ctx) error {
 	if err := c.BodyParser(&topic); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
+	topic.TopicID = bson.NewObjectId()
 	if err := uc.session.DB(models.DatabaseName).C(models.TopicsCollectionName).Insert(topic); err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}
+	// return the newly created Topic
 	return c.SendStatus(fiber.StatusOK)
 }
 

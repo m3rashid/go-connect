@@ -13,5 +13,4 @@ type Classifications struct {
 	Toxicity         bson.Decimal128     `json:"toxicity" bson:"toxicity"`
 	PostID           bson.ObjectId       `json:"postID" bson:"postID"`
 	CreatedAt        bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
-	UpdatedAt        bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

@@ -7,5 +7,4 @@ type Likes struct {
 	UserID    bson.ObjectId       `json:"userID,omitempty" bson:"userID,omitempty"`
 	PostID    bson.ObjectId       `json:"postID,omitempty" bson:"postID,omitempty"`
 	CreatedAt bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
-	UpdatedAt bson.MongoTimestamp `json:"updatedAt" bson:"updatedAt"`
 }

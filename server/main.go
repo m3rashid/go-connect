@@ -4,6 +4,7 @@ import (
 	"go-server/controllers"
 	"log"
 
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"gopkg.in/mgo.v2"
 
@@ -15,6 +16,9 @@ const mongodbUri = "mongodb://localhost:27017"
 func main() {
 	app := fiber.New()
 	app.Use(logger.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:3000",
+	}))
 
 	s, err := mgo.Dial(mongodbUri)
 	if err != nil {
@@ -41,10 +45,11 @@ func main() {
 	app.Post("/admin/deleteUser", admin.DeleteUser)
 	app.Post("/admin/getUser", admin.GetOneUser)
 	app.Post("/admin/getUsers", admin.GetUsers)
+	app.Get("/admin/topics", admin.GetTopics)
 
 	// auth
-	app.Post("/auth", auth.GetUser)
-	app.Post("/auth/admin", auth.GetAdmin)
+	app.Get("/auth", auth.GetUser)
+	app.Get("/auth/admin", auth.GetAdmin)
 	app.Post("/auth/adminLogin", auth.AdminLogin)
 	app.Post("/auth/login", auth.Login)
 	app.Post("/auth/signup", auth.Signup)
