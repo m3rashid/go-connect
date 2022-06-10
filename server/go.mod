@@ -4,6 +4,8 @@ go 1.18
 
 require (
 	github.com/gofiber/fiber/v2 v2.33.0
+	github.com/golang-jwt/jwt/v4 v4.4.1
+	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 )
 
