@@ -1,19 +1,23 @@
 package controllers
 
 import (
+	"context"
 	"go-server/models"
+	"go-server/utils"
 
 	"github.com/gofiber/fiber/v2"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type CommentsController struct {
-	session *mgo.Session
+	db  *mongo.Client
+	ctx context.Context
 }
 
-func NewCommentsController(s *mgo.Session) *CommentsController {
-	return &CommentsController{s}
+func NewCommentsController(db *mongo.Client, ctx context.Context) *CommentsController {
+	return &CommentsController{db, ctx}
 }
 
 func (uc CommentsController) AddComment(c *fiber.Ctx) error {
@@ -21,10 +25,20 @@ func (uc CommentsController) AddComment(c *fiber.Ctx) error {
 	if err := c.BodyParser(&comment); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	comment.CommentID = bson.NewObjectId()
-	if err := uc.session.DB(models.DatabaseName).C(models.CommentsCollectionName).Insert(comment); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	comment.CommentID = primitive.NewObjectID()
+	collection := models.GetCollection(uc.db, models.CommentsCollectionName)
+	_, err := collection.InsertOne(context.Background(), bson.M{
+		"CommentID": comment.CommentID,
+		"UserID":    comment.UserID,
+		"PostID":    comment.PostID,
+		"Text":      comment.Text,
+	})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
+
 	return c.SendStatus(fiber.StatusOK)
 }
 
@@ -33,8 +47,14 @@ func (uc CommentsController) DeleteComment(c *fiber.Ctx) error {
 	if err := c.BodyParser(&comment); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	if err := uc.session.DB(models.DatabaseName).C(models.CommentsCollectionName).Remove(comment); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	collection := models.GetCollection(uc.db, models.CommentsCollectionName)
+	_, err := collection.DeleteOne(context.Background(), bson.M{
+		"CommentID": comment.CommentID,
+	})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
 	return c.SendStatus(fiber.StatusOK)
 }
@@ -44,8 +64,19 @@ func (uc CommentsController) EditComment(c *fiber.Ctx) error {
 	if err := c.BodyParser(&comment); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	if err := uc.session.DB(models.DatabaseName).C(models.CommentsCollectionName).Update(comment.CommentID, comment); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	collection := models.GetCollection(uc.db, models.CommentsCollectionName)
+	_, err := collection.UpdateOne(context.Background(), bson.M{
+		"CommentID": comment.CommentID,
+	}, bson.M{
+		"$set": bson.M{
+			"Text": comment.Text,
+		},
+	})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
+
 	return c.SendStatus(fiber.StatusOK)
 }

@@ -1,62 +1,121 @@
 package controllers
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"go-server/models"
+	"go-server/utils"
+	"reflect"
 
 	"github.com/gofiber/fiber/v2"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type AdminsController struct {
-	session *mgo.Session
+	db  *mongo.Client
+	ctx context.Context
 }
 
-func NewAdminsController(s *mgo.Session) *AdminsController {
-	return &AdminsController{s}
+func NewAdminsController(db *mongo.Client, ctx context.Context) *AdminsController {
+	return &AdminsController{db, ctx}
 }
 
 func (uc AdminsController) GetUsers(c *fiber.Ctx) error {
 	users := []models.Auths{}
-	if err := uc.session.DB(models.DatabaseName).C(models.AuthCollectionName).Find(nil).All(&users); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	collection := models.GetCollection(uc.db, models.AuthCollectionName)
+
+	curr, err := collection.Find(context.Background(), bson.D{})
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
+
+	defer curr.Close(context.Background())
+	for curr.Next(context.Background()) {
+		err := curr.Decode(&users)
+		if err != nil {
+			return utils.HandleControllerError(c, err)
+		}
+	}
+
 	back, err := json.Marshal(users)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+		return utils.HandleControllerError(c, err)
 	}
+
 	return c.JSON(back)
 }
 
 func (uc AdminsController) GetOneUser(c *fiber.Ctx) error {
 	user := models.Auths{}
-	if err := uc.session.DB(models.DatabaseName).C(models.AuthCollectionName).Find(nil).One(&user); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	collection := models.GetCollection(uc.db, models.AuthCollectionName)
+
+	curr, err := collection.Find(context.Background(), bson.D{})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
+
+	defer curr.Close(context.Background())
+	for curr.Next(context.Background()) {
+		err := curr.Decode(&user)
+		if err != nil {
+			return utils.HandleControllerError(c, err)
+		}
+	}
+
 	back, err := json.Marshal(user)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+		return utils.HandleControllerError(c, err)
 	}
+
 	return c.JSON(back)
 }
 
 func (uc AdminsController) DeleteUser(c *fiber.Ctx) error {
-	user := models.Auths{}
-	if err := c.BodyParser(&user); err != nil {
+	var userId string
+
+	if err := c.BodyParser(&userId); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	if err := uc.session.DB(models.DatabaseName).C(models.AuthCollectionName).Remove(user); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	_id, err := primitive.ObjectIDFromHex(userId)
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
+
+	collection := models.GetCollection(uc.db, models.AuthCollectionName)
+
+	res, err := collection.DeleteOne(uc.ctx, bson.M{"_id": _id})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
+	}
+
+	fmt.Println("DeleteOne Result TYPE:", reflect.TypeOf(res))
+
 	return c.SendStatus(fiber.StatusOK)
 }
 
 func (uc AdminsController) GetTopics(c *fiber.Ctx) error {
 	topics := []models.Topics{}
-	if err := uc.session.DB(models.DatabaseName).C(models.TopicsCollectionName).Find(nil).All(&topics); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	collection := models.GetCollection(uc.db, models.TopicsCollectionName)
+
+	curr, err := collection.Find(context.Background(), bson.D{})
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
+
+	defer curr.Close(context.Background())
+	for curr.Next(context.Background()) {
+		err := curr.Decode(&topics)
+		if err != nil {
+			return utils.HandleControllerError(c, err)
+		}
+	}
+
 	back, err := json.Marshal(topics)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
@@ -69,12 +128,22 @@ func (uc AdminsController) CreateTopic(c *fiber.Ctx) error {
 	if err := c.BodyParser(&topic); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	topic.TopicID = bson.NewObjectId()
-	if err := uc.session.DB(models.DatabaseName).C(models.TopicsCollectionName).Insert(topic); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	topic.TopicID = primitive.NewObjectID()
+	collection := models.GetCollection(uc.db, models.TopicsCollectionName)
+
+	res, err := collection.InsertOne(context.Background(), topic)
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
-	// return the newly created Topic
-	return c.SendStatus(fiber.StatusOK)
+
+	back, err := json.Marshal(res)
+	if err != nil {
+		return utils.HandleControllerError(c, err)
+	}
+
+	return c.JSON(back)
 }
 
 func (uc AdminsController) UpdateTopic(c *fiber.Ctx) error {
@@ -82,30 +151,66 @@ func (uc AdminsController) UpdateTopic(c *fiber.Ctx) error {
 	if err := c.BodyParser(&topic); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	if err := uc.session.DB(models.DatabaseName).C(models.TopicsCollectionName).Update(topic.TopicID, topic); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	collection := models.GetCollection(uc.db, models.TopicsCollectionName)
+	res, err := collection.UpdateOne(context.Background(), bson.M{"TopicID": topic.TopicID}, bson.D{
+		{"set", bson.M{
+			"Name": topic.Name,
+		}},
+	})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
-	return c.SendStatus(fiber.StatusOK)
+
+	back, err := json.Marshal(res)
+	if err != nil {
+		return utils.HandleControllerError(c, err)
+	}
+
+	return c.JSON(back)
 }
 
 func (uc AdminsController) DeleteTopic(c *fiber.Ctx) error {
 	topic := models.Topics{}
+
 	if err := c.BodyParser(&topic); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	if err := uc.session.DB(models.DatabaseName).C(models.TopicsCollectionName).Remove(topic); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	collection := models.GetCollection(uc.db, models.TopicsCollectionName)
+	res, err := collection.DeleteOne(context.Background(), bson.M{"TopicID": topic.TopicID})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
-	return c.SendStatus(fiber.StatusOK)
+
+	back, err := json.Marshal(res)
+	if err != nil {
+		return utils.HandleControllerError(c, err)
+	}
+
+	return c.JSON(back)
 }
 
 func (uc AdminsController) DeletePost(c *fiber.Ctx) error {
 	post := models.Posts{}
+
 	if err := c.BodyParser(&post); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	if err := uc.session.DB(models.DatabaseName).C(models.PostsCollectionName).Remove(post); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	collection := models.GetCollection(uc.db, models.PostsCollectionName)
+	res, err := collection.DeleteOne(context.Background(), bson.M{"PostID": post.PostID})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
-	return c.SendStatus(fiber.StatusOK)
+
+	back, err := json.Marshal(res)
+	if err != nil {
+		return utils.HandleControllerError(c, err)
+	}
+
+	return c.JSON(back)
 }

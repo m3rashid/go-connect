@@ -1,16 +1,19 @@
 package controllers
 
 import (
+	"context"
+
 	"github.com/gofiber/fiber/v2"
-	"gopkg.in/mgo.v2"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type SearchController struct {
-	session *mgo.Session
+	db  *mongo.Client
+	ctx context.Context
 }
 
-func NewSearchController(s *mgo.Session) *SearchController {
-	return &SearchController{s}
+func NewSearchController(db *mongo.Client, ctx context.Context) *SearchController {
+	return &SearchController{db, ctx}
 }
 
 func (uc SearchController) SearchUserAndTopic(c *fiber.Ctx) error {

@@ -1,12 +1,12 @@
 import React from "react";
 
-import { useSelector } from "react-redux";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
+import Dialog from "./dialog";
 import { Table } from "./table";
 import usePost from "../../hooks/usePost";
 
-import Dialog from "./dialog";
 
 const PostsTable = () => {
   const { deletePost } = usePost();
@@ -61,6 +61,7 @@ const PostsTable = () => {
         ),
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

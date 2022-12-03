@@ -1,16 +1,19 @@
 package controllers
 
 import (
+	"context"
+
 	"github.com/gofiber/fiber/v2"
-	"gopkg.in/mgo.v2"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UpdateUserController struct {
-	session *mgo.Session
+	db  *mongo.Client
+	ctx context.Context
 }
 
-func NewUpdateUserController(s *mgo.Session) *UpdateUserController {
-	return &UpdateUserController{s}
+func NewUpdateUserController(db *mongo.Client, ctx context.Context) *UpdateUserController {
+	return &UpdateUserController{db, ctx}
 }
 
 func (uc UpdateUserController) UpdateAvatar(c *fiber.Ctx) error {

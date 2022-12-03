@@ -1,9 +1,11 @@
 package models
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type Topics struct {
-	TopicID   bson.ObjectId       `json:"_id,omitempty" bson:"_id,omitempty"`
+	TopicID   primitive.ObjectID  `json:"_id,omitempty" bson:"_id,omitempty"`
 	Name      string              `json:"name" bson:"name"`
-	CreatedAt bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
+	CreatedAt primitive.Timestamp `json:"createdAt" bson:"createdAt"`
 }

@@ -1,17 +1,16 @@
 package main
 
 import (
+	"context"
 	"go-server/controllers"
+	"go-server/models"
 	"log"
 
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"gopkg.in/mgo.v2"
 
 	"github.com/gofiber/fiber/v2"
 )
-
-const mongodbUri = "mongodb://localhost:27017"
 
 func main() {
 	app := fiber.New()
@@ -20,39 +19,37 @@ func main() {
 		AllowOrigins: "http://localhost:3000",
 	}))
 
-	s, err := mgo.Dial(mongodbUri)
-	if err != nil {
-		panic(err)
-	}
+	client, ctx := models.InitDataLayer()
+	client.Disconnect(context.Background())
 
-	admin := controllers.NewAdminsController(s)
-	auth := controllers.NewAuthsController(s)
-	bookmark := controllers.NewBookmarksController(s)
-	chats := controllers.NewChatsController(s)
-	comments := controllers.NewCommentsController(s)
-	friends := controllers.NewFriendsController(s)
-	likes := controllers.NewLikesController(s)
-	notifs := controllers.NewNotifsController(s)
-	posts := controllers.NewPostsController(s)
-	search := controllers.NewSearchController(s)
-	updateProf := controllers.NewUpdateUserController(s)
+	auth := controllers.NewAuthsController(client, ctx)
+	chats := controllers.NewChatsController(client, ctx)
+	likes := controllers.NewLikesController(client, ctx)
+	posts := controllers.NewPostsController(client, ctx)
+	admin := controllers.NewAdminsController(client, ctx)
+	notifs := controllers.NewNotifsController(client, ctx)
+	search := controllers.NewSearchController(client, ctx)
+	friends := controllers.NewFriendsController(client, ctx)
+	comments := controllers.NewCommentsController(client, ctx)
+	bookmark := controllers.NewBookmarksController(client, ctx)
+	updateProf := controllers.NewUpdateUserController(client, ctx)
 
 	// admin
-	app.Post("/admin/createTopic", admin.CreateTopic)
-	app.Post("/admin/updateTopic", admin.UpdateTopic)
-	app.Post("/admin/deleteTopic", admin.DeleteTopic)
+	app.Get("/admin/topics", admin.GetTopics)
+	app.Post("/admin/getUsers", admin.GetUsers)
+	app.Post("/admin/getUser", admin.GetOneUser)
 	app.Post("/admin/deletePost", admin.DeletePost)
 	app.Post("/admin/deleteUser", admin.DeleteUser)
-	app.Post("/admin/getUser", admin.GetOneUser)
-	app.Post("/admin/getUsers", admin.GetUsers)
-	app.Get("/admin/topics", admin.GetTopics)
+	app.Post("/admin/deleteTopic", admin.DeleteTopic)
+	app.Post("/admin/updateTopic", admin.UpdateTopic)
+	app.Post("/admin/createTopic", admin.CreateTopic)
 
 	// auth
 	app.Get("/auth", auth.GetUser)
-	app.Get("/auth/admin", auth.GetAdmin)
-	app.Post("/auth/adminLogin", auth.AdminLogin)
 	app.Post("/auth/login", auth.Login)
+	app.Get("/auth/admin", auth.GetAdmin)
 	app.Post("/auth/signup", auth.Signup)
+	app.Post("/auth/adminLogin", auth.AdminLogin)
 	app.Post("/auth/other-user", auth.GetOneOtherUser)
 
 	// user actions
@@ -61,10 +58,10 @@ func main() {
 	app.Post("/user/update-password", updateProf.UpdatePassword)
 
 	// post actions
-	app.Post("/post/fromTopic", posts.GetPostsByTopic)
-	app.Post("/post/all", posts.GetAllPosts)
-	app.Post("/post/one", posts.GetOnePost)
 	app.Post("/post/add", posts.AddPost)
+	app.Post("/post/one", posts.GetOnePost)
+	app.Post("/post/all", posts.GetAllPosts)
+	app.Post("/post/fromTopic", posts.GetPostsByTopic)
 
 	// like actions
 	app.Post("/like/add", likes.AddLike)
@@ -76,18 +73,18 @@ func main() {
 	app.Post("/comment/delete", comments.DeleteComment)
 
 	// friendship actions
+	app.Post("/friendship/block", friends.BlockUser)
 	app.Post("/friendship/send", friends.SendRequest)
-	app.Post("/friendship/unsend", friends.UnsendRequest)
-	app.Post("/friendship/accept", friends.AcceptRequest)
 	app.Post("/friendship/deny", friends.DenyRequest)
 	app.Post("/friendship/unfriend", friends.Unfriend)
-	app.Post("/friendship/block", friends.BlockUser)
 	app.Post("/friendship/unblock", friends.UnblockUser)
+	app.Post("/friendship/unsend", friends.UnsendRequest)
+	app.Post("/friendship/accept", friends.AcceptRequest)
 
 	// bookmark actions
-	app.Post("/bookmark/remove", bookmark.RemoveBookmark)
 	app.Post("/bookmark/add", bookmark.AddBookmark)
 	app.Post("/bookmark/all", bookmark.GetAllBookmarks)
+	app.Post("/bookmark/remove", bookmark.RemoveBookmark)
 
 	// chat actions
 	app.Post("/chats/all", chats.GetAllChats)

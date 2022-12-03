@@ -1,11 +1,13 @@
 package models
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type Comments struct {
-	CommentID bson.ObjectId       `json:"_id,omitempty" bson:"_id,omitempty"`
-	UserID    bson.ObjectId       `json:"userID,omitempty" bson:"userID,omitempty"`
-	PostID    bson.ObjectId       `json:"postID,omitempty" bson:"postID,omitempty"`
+	CommentID primitive.ObjectID  `json:"_id,omitempty" bson:"_id,omitempty"`
+	UserID    primitive.ObjectID  `json:"userID,omitempty" bson:"userID,omitempty"`
+	PostID    primitive.ObjectID  `json:"postID,omitempty" bson:"postID,omitempty"`
 	Text      string              `json:"text" bson:"text"`
-	CreatedAt bson.MongoTimestamp `json:"createdAt" bson:"createdAt"`
+	CreatedAt primitive.Timestamp `json:"createdAt" bson:"createdAt"`
 }

@@ -63,7 +63,7 @@ export const loadUser = () => async (dispatch: any) => {
     }
   } catch (err) {
     dispatch({ type: AUTH_ERROR });
-    toast.info("Could not find your logged in session");
+    toast.info("Could not find your logged in ctx");
   }
 };
 

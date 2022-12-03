@@ -1,16 +1,19 @@
 package controllers
 
 import (
+	"context"
+
 	"github.com/gofiber/fiber/v2"
-	"gopkg.in/mgo.v2"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type NotifsController struct {
-	session *mgo.Session
+	db  *mongo.Client
+	ctx context.Context
 }
 
-func NewNotifsController(s *mgo.Session) *NotifsController {
-	return &NotifsController{s}
+func NewNotifsController(db *mongo.Client, ctx context.Context) *NotifsController {
+	return &NotifsController{db, ctx}
 }
 
 func (uc NotifsController) GetNotifications(c *fiber.Ctx) error {

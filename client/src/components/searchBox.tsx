@@ -40,6 +40,7 @@ export const SearchBox = () => {
     return () => {
       debouncedResults.cancel();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

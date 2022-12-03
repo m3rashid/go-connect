@@ -1,20 +1,24 @@
 package controllers
 
 import (
+	"context"
 	"encoding/json"
 	"go-server/models"
+	"go-server/utils"
 
 	"github.com/gofiber/fiber/v2"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type BookmarksController struct {
-	session *mgo.Session
+	db  *mongo.Client
+	ctx context.Context
 }
 
-func NewBookmarksController(s *mgo.Session) *BookmarksController {
-	return &BookmarksController{s}
+func NewBookmarksController(db *mongo.Client, ctx context.Context) *BookmarksController {
+	return &BookmarksController{db, ctx}
 }
 
 func (uc BookmarksController) RemoveBookmark(c *fiber.Ctx) error {
@@ -22,9 +26,13 @@ func (uc BookmarksController) RemoveBookmark(c *fiber.Ctx) error {
 	if err := c.BodyParser(&bookmark); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	if err := uc.session.DB(models.DatabaseName).C(models.BookmarksCollectionName).Remove(bookmark); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+
+	collection := models.GetCollection(uc.db, models.BookmarksCollectionName)
+	err := collection.FindOneAndDelete(uc.ctx, bson.M{"_id": bookmark.BookmarkID}).Decode(&bookmark)
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
+
 	return c.SendStatus(fiber.StatusOK)
 }
 
@@ -33,26 +41,41 @@ func (uc BookmarksController) AddBookmark(c *fiber.Ctx) error {
 	if err := c.BodyParser(&bookmark); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	// add some validator functions
-	// if err := bookmark.Validate(); err != nil {}
+	bookmark.BookmarkID = primitive.NewObjectID()
 
-	bookmark.BookmarkID = bson.NewObjectId()
-	uc.session.DB(models.DatabaseName).C(models.BookmarksCollectionName).Insert(bookmark)
+	collection := models.GetCollection(uc.db, models.BookmarksCollectionName)
+	_, err := collection.InsertOne(context.Background(), bson.M{
+		"BookmarkID": bookmark.BookmarkID,
+		"User":       bookmark.User,
+		"Post":       bookmark.Post,
+	})
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
+	}
+
 	back, err := json.Marshal(bookmark)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}
+
 	return c.JSON(back)
 }
 
 func (uc BookmarksController) GetAllBookmarks(c *fiber.Ctx) error {
 	bookmarks := []models.Bookmarks{}
-	if err := uc.session.DB(models.DatabaseName).C(models.BookmarksCollectionName).Find(nil).All(&bookmarks); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	collection := models.GetCollection(uc.db, models.BookmarksCollectionName)
+
+	err := collection.FindOne(context.Background(), bson.M{}).Decode(&bookmarks)
+
+	if err != nil {
+		return utils.HandleControllerError(c, err)
 	}
+
 	back, err := json.Marshal(bookmarks)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+		return utils.HandleControllerError(c, err)
 	}
+
 	return c.JSON(back)
 }
